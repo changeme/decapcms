@@ -1,0 +1,20 @@
+#version: '3' # Ya no se usa
+
+services:
+  decap-cms:
+    image: netlify/cms
+    container_name: decap-cms
+    ports:
+      - "8080:80"  # Accede al CMS desde http://localhost:8080
+    volumes:
+      - ./config:/config
+      - ./src:/usr/share/nginx/html
+    environment:
+      - CMS_BACKEND=git-gateway
+      - CMS_GITHUB_API_URL=http://host.docker.internal:3001/api/v1
+      - CMS_GITHUB_REPO=nombre_de_usuario/repositorio # Aquí pon el nombre de tu repositorio de Gitea
+      - CMS_GITEA_URL=http://host.docker.internal:3001
+      - CMS_AUTHORIZATION_MODE=jwt
+      - CMS_LOGIN=login_usuario
+      - CMS_PASSWORD=password_usuario
+    restart: always
